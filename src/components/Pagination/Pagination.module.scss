@@ -1,0 +1,45 @@
+.paginationBlock {
+
+    margin: 0 auto;
+    max-width:300px;
+    display: flex;
+  
+    justify-content: space-around;
+  
+    li {
+    display: inline-block;
+    }
+    a {
+        display: inline-block;
+        padding-top: 3px;
+        font-size: 18px;
+        border:1px solid #fe5f1e;
+        border-radius: 50%;
+        width: 35px;
+        height: 35px;
+        text-align: center;
+
+        transition: 0.3s ease-in-out ;
+
+        &:hover {
+            color: white;
+            cursor: pointer;
+            background-color: #fe5f1e;
+
+    }
+    
+   
+    
+    }
+    :global {
+        .selected {
+            a{
+                color: white;   
+                background-color: #fe5f1e;
+     
+            }
+           
+        }
+    }
+   
+}

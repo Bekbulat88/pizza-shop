@@ -30,8 +30,6 @@ export const PizzaBlock = ({ title, price, imageUrl, sizes, types }) => {
               </li>
             );
           })}
-          {/* <li className="active">тонкое</li>
-          <li>традиционное</li> */}
         </ul>
         <ul>
           {sizes.map((elem, index) => {

@@ -1,0 +1,37 @@
+.root {
+    position: relative;
+    // width: 300px;
+}
+.searchLogo {
+    position: absolute;
+    height: 18px;
+    left: 10px;
+    top: 10px;
+    opacity: 0.7;
+    &:focus {
+        opacity: 0;
+       }
+}
+
+.searchInput{
+    padding: 5px 30px 5px 40px;
+    width: 400px;
+   border-radius: 15px;
+ font-size: 20px;
+   opacity: 0.5;
+
+   &:focus {
+    border: 1px solid rgba(0, 0, 0, 0.7);
+   }
+}
+.clearSearchField {
+    position: absolute;
+    height: 16px;
+    right: 10px;
+    top: 12px;
+    opacity: 0.6;
+    
+    &:hover {
+        cursor: pointer;
+    }
+}

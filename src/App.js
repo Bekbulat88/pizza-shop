@@ -1,38 +1,25 @@
-import { Categories } from './components/Categories';
 import { Header } from './components/Header';
-import { PizzaBlock } from './components/PizzaBlock';
-import { Sort } from './components/Sort';
+import Home from './pages/Home';
+import NotFound from './components/NotFound/NotFound';
+
 import './scss/app.scss';
-import pizzasArray from './assets/pizzas.json';
+import { Route, Routes } from 'react-router-dom';
+import Cart from './pages/Cart';
+import { useState } from 'react';
 
 function App() {
+  const [searchText, setSearchText] = useState('');
+
   return (
     <div className="wrapper">
-      <Header />
+      <Header searchText={searchText} setSearchText={setSearchText} />
       <div className="content">
         <div className="container">
-          <div className="content__top">
-            <Categories />
-            <Sort />
-          </div>
-          <h2 className="content__title">Все пиццы</h2>
-          <div className="content__items">
-            {pizzasArray.map((elem) => {
-              return (
-                <PizzaBlock
-                  key={elem.id}
-                  {...elem}
-                  // title={elem.title}
-                  // price={elem.price}
-                  // image={elem.imageUrl}
-                  // sizes={elem.sizes}
-                  // types={elem.types}
-                />
-              );
-            })}
-            {/* <PizzaBlock title="Маргарита" price="300" />
-            <PizzaBlock title="Чизбургер" price="500" /> */}
-          </div>
+          <Routes>
+            <Route path="/" element={<Home searchText={searchText} />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
         </div>
       </div>
     </div>

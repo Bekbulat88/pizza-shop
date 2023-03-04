@@ -1,15 +1,16 @@
 import { useState } from 'react';
 
-export const Sort = () => {
-  const sortList = ['популярности', 'цене', 'алфавиту'];
-  const [isOpen, setIsOpen] = useState(true);
-
-  const [activeType, setActiveType] = useState(0);
-
-  const activateSortType = (index) => {
-    setActiveType(index);
-    setIsOpen(!isOpen);
-  };
+export const Sort = ({ sortType, onClickChangeSort }) => {
+  // const sortList = ['популярности', 'цене', 'алфавиту'];
+  const [isOpen, setIsOpen] = useState(false);
+  const sortList = [
+    { name: 'популярности (desc)', sortProperty: 'rating' },
+    { name: 'популярности (asc)', sortProperty: '-rating' },
+    { name: 'цене (desc)', sortProperty: 'price' },
+    { name: 'цене (asc)', sortProperty: '-price' },
+    { name: 'алфавиту (desc)', sortProperty: 'title' },
+    { name: 'алфавиту (asc)', sortProperty: '-title' },
+  ];
 
   return (
     <div className="sort">
@@ -32,33 +33,27 @@ export const Sort = () => {
             setIsOpen(!isOpen);
           }}
         >
-          {sortList[activeType]}
+          {/* {sortList[sortIndex]} */}
+          {sortType.name}
         </span>
       </div>
       {isOpen && (
         <div className="sort__popup">
           <ul>
-            {sortList.map((elem, index) => (
+            {sortList.map((obj) => (
               <li
-                key={index}
+                key={obj.name}
                 onClick={() => {
-                  activateSortType(index);
+                  onClickChangeSort(obj);
                 }}
-                className={index == activeType ? 'active' : ''}
+                className={obj.sortProperty == sortType.sortProperty ? 'active' : ''}
               >
-                {elem}
+                {obj.name}
               </li>
             ))}
           </ul>
         </div>
       )}
-      {/* <div className="sort__popup">
-        <ul>
-          <li className="active">популярности</li>
-          <li>цене</li>
-          <li>алфавиту</li>
-        </ul>
-      </div> */}
     </div>
   );
 };
