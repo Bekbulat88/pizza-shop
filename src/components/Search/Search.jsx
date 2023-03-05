@@ -1,11 +1,33 @@
+import { createRef, useCallback, useContext, useEffect, useState } from 'react';
 import style from './Search.module.scss';
+import { SearchContext } from '../../App';
+import debounce from 'lodash.debounce';
 
-const Search = ({ searchText, setSearchText }) => {
+const Search = () => {
+  const [value, setValue] = useState('');
+  const { searchText, setSearchText } = useContext(SearchContext);
+  const inputRef = createRef();
+
+  useEffect(() => {
+    inputRef.current.focus();
+  }, [searchText]);
+
+  const updateSearchValue = useCallback(
+    debounce((str) => {
+      setSearchText(str);
+    }, 350),
+    [],
+  );
+  const onChangeInput = (event) => {
+    setValue(event.target.value);
+    updateSearchValue(event.target.value);
+  };
+
   return (
     <div className={style.root}>
       <svg
         className={style.searchLogo}
-        enable-background="new 0 0 26 26"
+        enableBackground="new 0 0 26 26"
         id="Слой_1"
         version="1.1"
         viewBox="0 0 26 26"
@@ -18,8 +40,9 @@ const Search = ({ searchText, setSearchText }) => {
       </svg>
 
       <input
-        value={searchText}
-        onChange={(event) => setSearchText(event.target.value)}
+        ref={inputRef}
+        value={value}
+        onChange={onChangeInput}
         className={style.searchInput}
         placeholder="Что найти?"
       />
@@ -28,9 +51,10 @@ const Search = ({ searchText, setSearchText }) => {
         <svg
           onClick={() => {
             setSearchText('');
+            setValue('');
           }}
           className={style.clearSearchField}
-          enable-background="new 0 0 26 26"
+          enableBackground="new 0 0 26 26"
           id="Слой_1"
           version="1.1"
           viewBox="0 0 26 26"
