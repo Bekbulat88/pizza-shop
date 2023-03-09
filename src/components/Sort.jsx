@@ -1,19 +1,33 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+
+export const sortList = [
+  { name: 'популярности (desc)', sortProperty: 'rating' },
+  { name: 'популярности (asc)', sortProperty: '-rating' },
+  { name: 'цене (desc)', sortProperty: 'price' },
+  { name: 'цене (asc)', sortProperty: '-price' },
+  { name: 'алфавиту (desc)', sortProperty: 'title' },
+  { name: 'алфавиту (asc)', sortProperty: '-title' },
+];
 
 export const Sort = ({ sortType, onClickChangeSort }) => {
-  // const sortList = ['популярности', 'цене', 'алфавиту'];
   const [isOpen, setIsOpen] = useState(false);
-  const sortList = [
-    { name: 'популярности (desc)', sortProperty: 'rating' },
-    { name: 'популярности (asc)', sortProperty: '-rating' },
-    { name: 'цене (desc)', sortProperty: 'price' },
-    { name: 'цене (asc)', sortProperty: '-price' },
-    { name: 'алфавиту (desc)', sortProperty: 'title' },
-    { name: 'алфавиту (asc)', sortProperty: '-title' },
-  ];
+  const sortRef = useRef();
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (sortRef.current.contains(event.target)) {
+        return;
+      }
+      setIsOpen(false);
+    };
+    document.body.addEventListener('click', handleClickOutside);
+    return () => {
+      document.body.removeEventListener('click', handleClickOutside);
+    };
+  }, []);
 
   return (
-    <div className="sort">
+    <div ref={sortRef} className="sort">
       <div className="sort__label">
         <svg
           width="10"
