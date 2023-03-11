@@ -5,7 +5,7 @@ import Search from './Search/Search';
 
 export const Header = () => {
   const { items, totalPrice } = useSelector(cartSelect);
-  const totalCount = items.reduce((sum, elem) => sum + elem.count, 0);
+  const totalCount = items.reduce((sum : number, elem: any) => sum + elem.count, 0);
   return (
     <div className="header">
       <div className="container">
@@ -19,9 +19,8 @@ export const Header = () => {
           </div>
         </Link>
         <Search />
-        <Link to={'/cart'}>
           <div className="header__cart">
-            <a href="/cart.html" className="button button--cart">
+            <Link to={'/cart'} className="button button--cart">
               <span>{totalPrice} ₽</span>
               <div className="button__delimiter"></div>
               <svg
@@ -54,9 +53,8 @@ export const Header = () => {
                 />
               </svg>
               <span>{totalCount}</span>
-            </a>
+            </Link>
           </div>
-        </Link>
       </div>
     </div>
   );

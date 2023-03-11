@@ -6,11 +6,14 @@ import { cartSelect, clearCart } from '../Redux/slices/cartSlice';
 
 const Cart = () => {
   const { items, totalPrice } = useSelector(cartSelect);
+
   const dispatch = useDispatch();
+
   const onClickClearCart = () => {
     dispatch(clearCart());
   };
-  const totalCount = items.reduce((sum, elem) => sum + elem.count, 0);
+  
+  const totalCount = items.reduce((sum : number, elem : any) => sum + elem.count, 0);
   if (!items.length) {
     return <CartEmpty />;
   }
@@ -91,7 +94,7 @@ const Cart = () => {
         </div>
       </div>
       <div className="content__items">
-        {items.map((elem) => (
+        {items.map((elem : any) => (
           <CartItem key={elem.id} {...elem} />
         ))}
       </div>

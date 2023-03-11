@@ -8,14 +8,18 @@ export const sortList = [
   { name: 'алфавиту (desc)', sortProperty: 'title' },
   { name: 'алфавиту (asc)', sortProperty: '-title' },
 ];
+type SortProps = {
+  sortType:  {name: string; sortProperty: string };
+  onClickChangeSort : any
+}
 
-export const Sort = ({ sortType, onClickChangeSort }) => {
+export const Sort = ({ sortType, onClickChangeSort } : SortProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const sortRef = useRef();
+  const sortRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (sortRef.current.contains(event.target)) {
+    const handleClickOutside = (event : any) => {
+      if (sortRef.current && sortRef.current.contains(event.target)) {
         return;
       }
       setIsOpen(false);

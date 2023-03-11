@@ -1,26 +1,33 @@
-import { createRef, useCallback, useContext, useEffect, useState } from 'react';
+import { createRef, useCallback, useState } from 'react';
 import style from './Search.module.scss';
-import { SearchContext } from '../../App';
 import debounce from 'lodash.debounce';
+import { setSearchValue } from '../../Redux/slices/filterSlice';
+import { useDispatch } from 'react-redux';
 
 const Search = () => {
+  const dispatch = useDispatch();
   const [value, setValue] = useState('');
-  const { searchText, setSearchText } = useContext(SearchContext);
-  const inputRef = createRef();
-
-  useEffect(() => {
-    inputRef.current.focus();
-  }, [searchText]);
+  const inputRef = createRef<HTMLInputElement>();
 
   const updateSearchValue = useCallback(
-    debounce((str) => {
-      setSearchText(str);
+    debounce((str: string) => {
+      dispatch(setSearchValue(str));
     }, 350),
     [],
   );
-  const onChangeInput = (event) => {
+
+  const onChangeInput = (event : any) => {
     setValue(event.target.value);
     updateSearchValue(event.target.value);
+  };
+
+  const clearSearchValue = () => {
+    dispatch(setSearchValue(''));
+    setValue('');
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+    
   };
 
   return (
@@ -47,12 +54,9 @@ const Search = () => {
         placeholder="Что найти?"
       />
 
-      {searchText && (
+      {value && (
         <svg
-          onClick={() => {
-            setSearchText('');
-            setValue('');
-          }}
+          onClick={clearSearchValue}
           className={style.clearSearchField}
           enableBackground="new 0 0 26 26"
           id="Слой_1"

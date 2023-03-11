@@ -1,10 +1,9 @@
 import { Categories } from '../components/Categories';
 import { PizzaBlock } from '../components/pizzaBlock/PizzaBlock';
 import { Sort, sortList } from '../components/Sort';
-import { useContext, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import Skeleton from '../components/pizzaBlock/SkeletonPizzaBlock';
 import Pagination from '../components/Pagination/Pagination';
-import { SearchContext } from '../App';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   filterSelect,
@@ -25,17 +24,15 @@ const Home = () => {
   const isMounted = useRef(false);
 
   const { items, status } = useSelector(pizzaSelect);
-  const { sortType, categoryId, currentPage } = useSelector(filterSelect);
+  const { sortType, categoryId, currentPage, searchValue } = useSelector(filterSelect);
 
-  const { searchText } = useContext(SearchContext);
-
-  const changeSortType = (sortObject) => {
+  const changeSortType = (sortObject : { name: string, sortProperty: string }) => {
     dispatch(setSortType(sortObject));
   };
-  const onChangeCategory = (id) => {
+  const onChangeCategory = (id : number) => {
     dispatch(setCategoryId(id));
   };
-  const onChangePage = (number) => {
+  const onChangePage = (number : number) => {
     dispatch(setCurrentPage(number));
   };
 
@@ -43,11 +40,12 @@ const Home = () => {
     const sortBy = sortType.sortProperty.replace('-', '');
     const order = sortType.sortProperty.includes('-') ? 'asc' : 'desc';
     dispatch(
+      //@ts-ignore
       fetchPizzas({
         sortBy,
         order,
         categoryId,
-        searchText,
+        searchValue,
         currentPage,
       }),
     );
@@ -70,7 +68,7 @@ const Home = () => {
       getPizzas();
     }
     isSearch.current = false;
-  }, [categoryId, sortType, searchText, currentPage]);
+  }, [categoryId, sortType, searchValue, currentPage]);
 
   useEffect(() => {
     if (isMounted.current) {
@@ -100,7 +98,7 @@ const Home = () => {
         <div className="content__items">
           {status === 'loading'
             ? [...new Array(6)].map((_, index) => <Skeleton key={index} />)
-            : items.map((elem, index) => <PizzaBlock {...elem} key={index} />)}
+            : items.map((elem : any, index : number) => <PizzaBlock {...elem} key={index} />)}
         </div>
       )}
       <Pagination onChangeCurrentPage={onChangePage} />
