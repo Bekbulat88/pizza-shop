@@ -11,14 +11,18 @@ import {
   setCurrentPage,
   setFilter,
   setSortType,
+  SortType,
+
 } from '../Redux/slices/filterSlice';
 import qs from 'qs';
 import { useNavigate } from 'react-router-dom';
 import { fetchPizzas, pizzaSelect } from '../Redux/slices/pizzasSlice';
+import { useAppDispatch } from '../Redux/store';
+
 
 const Home = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const isSearch = useRef(false);
   const isMounted = useRef(false);
@@ -26,8 +30,8 @@ const Home = () => {
   const { items, status } = useSelector(pizzaSelect);
   const { sortType, categoryId, currentPage, searchValue } = useSelector(filterSelect);
 
-  const changeSortType = (sortObject : { name: string, sortProperty: string }) => {
-    dispatch(setSortType(sortObject));
+  const changeSortType = (sortObj : SortType) => {
+    dispatch(setSortType(sortObj));
   };
   const onChangeCategory = (id : number) => {
     dispatch(setCategoryId(id));
@@ -40,7 +44,7 @@ const Home = () => {
     const sortBy = sortType.sortProperty.replace('-', '');
     const order = sortType.sortProperty.includes('-') ? 'asc' : 'desc';
     dispatch(
-      //@ts-ignore
+    
       fetchPizzas({
         sortBy,
         order,
@@ -57,7 +61,8 @@ const Home = () => {
       const params = qs.parse(window.location.search.substring(1));
       //make obj from string (URI address)
       const sortType = sortList.find((obj) => obj.sortProperty === params.sortProperty);
-      dispatch(setFilter({ ...params, sortType }));
+      //@ts-ignore
+      dispatch(setFilter({...params, sortType}));
       isSearch.current = true;
     }
   }, []);

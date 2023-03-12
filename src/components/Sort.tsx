@@ -8,21 +8,23 @@ export const sortList = [
   { name: 'алфавиту (desc)', sortProperty: 'title' },
   { name: 'алфавиту (asc)', sortProperty: '-title' },
 ];
+
 type SortProps = {
   sortType:  {name: string; sortProperty: string };
-  onClickChangeSort : any
+  onClickChangeSort : (sortObject : { name: string, sortProperty: string }) => void
 }
 
 export const Sort = ({ sortType, onClickChangeSort } : SortProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const sortRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const handleClickOutside = (event : any) => {
-      if (sortRef.current && sortRef.current.contains(event.target)) {
-        return;
+  useEffect(() => { 
+    const handleClickOutside = (event : MouseEvent) => {
+      
+      if (sortRef.current && !event.composedPath().includes(sortRef.current)) {
+        setIsOpen(false);
       }
-      setIsOpen(false);
+      
     };
     document.body.addEventListener('click', handleClickOutside);
     return () => {
@@ -51,7 +53,6 @@ export const Sort = ({ sortType, onClickChangeSort } : SortProps) => {
             setIsOpen(!isOpen);
           }}
         >
-          {/* {sortList[sortIndex]} */}
           {sortType.name}
         </span>
       </div>
