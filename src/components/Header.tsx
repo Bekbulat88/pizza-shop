@@ -1,11 +1,25 @@
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { cartSelect } from '../Redux/slices/cartSlice';
 import Search from './Search/Search';
+import { useEffect, useRef } from 'react';
+import React from 'react';
 
 export const Header = () => {
   const { items, totalPrice } = useSelector(cartSelect);
-  const totalCount = items.reduce((sum : number, elem: any) => sum + elem.count, 0);
+  const totalCount = items.reduce((sum: number, elem: any) => sum + elem.count, 0);
+  let location = useLocation();
+
+  const isMounted = useRef(false);
+
+  useEffect(() => {
+    if (isMounted.current) {
+      const json = JSON.stringify(items);
+      localStorage.setItem('cart', json);
+    }
+    isMounted.current = true;
+  }, [items]);
+
   return (
     <div className="header">
       <div className="container">
@@ -18,8 +32,9 @@ export const Header = () => {
             </div>
           </div>
         </Link>
-        <Search />
-          <div className="header__cart">
+        {location.pathname !== '/cart' && <Search />}
+        <div className="header__cart">
+          {location.pathname !== '/cart' && (
             <Link to={'/cart'} className="button button--cart">
               <span>{totalPrice} ₽</span>
               <div className="button__delimiter"></div>
@@ -54,7 +69,8 @@ export const Header = () => {
               </svg>
               <span>{totalCount}</span>
             </Link>
-          </div>
+          )}
+        </div>
       </div>
     </div>
   );

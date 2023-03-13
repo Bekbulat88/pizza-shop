@@ -12,13 +12,11 @@ import {
   setFilter,
   setSortType,
   SortType,
-
 } from '../Redux/slices/filterSlice';
 import qs from 'qs';
 import { useNavigate } from 'react-router-dom';
 import { fetchPizzas, pizzaSelect } from '../Redux/slices/pizzasSlice';
 import { useAppDispatch } from '../Redux/store';
-
 
 const Home = () => {
   const navigate = useNavigate();
@@ -30,13 +28,13 @@ const Home = () => {
   const { items, status } = useSelector(pizzaSelect);
   const { sortType, categoryId, currentPage, searchValue } = useSelector(filterSelect);
 
-  const changeSortType = (sortObj : SortType) => {
+  const changeSortType = (sortObj: SortType) => {
     dispatch(setSortType(sortObj));
   };
-  const onChangeCategory = (id : number) => {
+  const onChangeCategory = (id: number) => {
     dispatch(setCategoryId(id));
   };
-  const onChangePage = (number : number) => {
+  const onChangePage = (number: number) => {
     dispatch(setCurrentPage(number));
   };
 
@@ -44,7 +42,6 @@ const Home = () => {
     const sortBy = sortType.sortProperty.replace('-', '');
     const order = sortType.sortProperty.includes('-') ? 'asc' : 'desc';
     dispatch(
-    
       fetchPizzas({
         sortBy,
         order,
@@ -59,10 +56,23 @@ const Home = () => {
     if (window.location.search) {
       // if URI address has smthg
       const params = qs.parse(window.location.search.substring(1));
+      let paramsNumberFields = {
+        ...params,
+        categoryId: Number(params.categoryId),
+        currentPage: Number(params.currentPage),
+      };
+
       //make obj from string (URI address)
       const sortType = sortList.find((obj) => obj.sortProperty === params.sortProperty);
-      //@ts-ignore
-      dispatch(setFilter({...params, sortType}));
+
+      if (sortType)
+        dispatch(
+          setFilter({
+            ...paramsNumberFields,
+            sortType,
+            searchValue: '',
+          }),
+        );
       isSearch.current = true;
     }
   }, []);
@@ -103,7 +113,7 @@ const Home = () => {
         <div className="content__items">
           {status === 'loading'
             ? [...new Array(6)].map((_, index) => <Skeleton key={index} />)
-            : items.map((elem : any, index : number) => <PizzaBlock {...elem} key={index} />)}
+            : items.map((elem: any, index: number) => <PizzaBlock {...elem} key={index} />)}
         </div>
       )}
       <Pagination onChangeCurrentPage={onChangePage} />

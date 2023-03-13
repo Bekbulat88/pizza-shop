@@ -9,6 +9,7 @@ export const sortList = [
   { name: 'алфавиту (asc)', sortProperty: '-title' },
 ];
 
+
 type SortProps = {
   sortType:  {name: string; sortProperty: string };
   onClickChangeSort : (sortObject : { name: string, sortProperty: string }) => void

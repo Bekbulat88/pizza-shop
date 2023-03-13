@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../store';
 
 export type SortType = 
-  { name: string; 
+  { name: string;                                                                                                       
     sortProperty: string }
 
 export interface FilterSliceState{
