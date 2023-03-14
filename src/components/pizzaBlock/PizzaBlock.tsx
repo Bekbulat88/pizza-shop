@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addItem, cartSelectItemsById } from '../../Redux/slices/cartSlice';
+import { addItem } from '../../Redux/cart/slice';
+import { cartSelectItemsById } from '../../Redux/cart/selectors';
 
 const typeNames = ['тонкое', 'традиционное'];
 
@@ -8,10 +9,10 @@ type PizzaBlockProps = {
   id: number;
   title: string;
   price: number;
-  imageUrl:string;
-  sizes:number[];
-  types:number[]
-}
+  imageUrl: string;
+  sizes: number[];
+  types: number[];
+};
 
 export const PizzaBlock = ({ id, title, price, imageUrl, sizes, types }: PizzaBlockProps) => {
   const dispatch = useDispatch();
@@ -20,7 +21,7 @@ export const PizzaBlock = ({ id, title, price, imageUrl, sizes, types }: PizzaBl
 
   const addedCount = cartItem ? cartItem.count : 0;
 
-  const changeSize = (index : number) => {
+  const changeSize = (index: number) => {
     setSizeIndex(index);
   };
 
@@ -37,7 +38,7 @@ export const PizzaBlock = ({ id, title, price, imageUrl, sizes, types }: PizzaBl
       imageUrl,
       type: typeNames[type],
       size: sizes[sizeIndex],
-      count:0
+      count: 0,
     };
     dispatch(addItem(item));
   };

@@ -4,18 +4,14 @@ import { Sort, sortList } from '../components/Sort';
 import { useEffect, useRef } from 'react';
 import Skeleton from '../components/pizzaBlock/SkeletonPizzaBlock';
 import Pagination from '../components/Pagination/Pagination';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  filterSelect,
-  setCategoryId,
-  setCurrentPage,
-  setFilter,
-  setSortType,
-  SortType,
-} from '../Redux/slices/filterSlice';
+import { useSelector } from 'react-redux';
+import { SortType } from '../Redux/filter/types';
+import { filterSelect } from '../Redux/filter/selectors';
+import { setCategoryId, setCurrentPage, setFilter, setSortType } from '../Redux/filter/slice';
 import qs from 'qs';
 import { useNavigate } from 'react-router-dom';
-import { fetchPizzas, pizzaSelect } from '../Redux/slices/pizzasSlice';
+import { fetchPizzas } from '../Redux/pizza/slice';
+import { pizzaSelect } from '../Redux/pizza/selectors';
 import { useAppDispatch } from '../Redux/store';
 
 const Home = () => {

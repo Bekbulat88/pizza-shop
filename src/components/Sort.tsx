@@ -9,23 +9,20 @@ export const sortList = [
   { name: 'алфавиту (asc)', sortProperty: '-title' },
 ];
 
-
 type SortProps = {
-  sortType:  {name: string; sortProperty: string };
-  onClickChangeSort : (sortObject : { name: string, sortProperty: string }) => void
-}
+  sortType: { name: string; sortProperty: string };
+  onClickChangeSort: (sortObject: { name: string; sortProperty: string }) => void;
+};
 
-export const Sort = ({ sortType, onClickChangeSort } : SortProps) => {
+export const Sort = ({ sortType, onClickChangeSort }: SortProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const sortRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => { 
-    const handleClickOutside = (event : MouseEvent) => {
-      
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
       if (sortRef.current && !event.composedPath().includes(sortRef.current)) {
         setIsOpen(false);
       }
-      
     };
     document.body.addEventListener('click', handleClickOutside);
     return () => {
