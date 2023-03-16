@@ -5,6 +5,7 @@ import CartItem from '../components/CartItem/CartItem';
 import { clearCart } from '../Redux/cart/slice';
 import { CartItemType } from '../Redux/cart/types';
 import { cartSelect } from '../Redux/cart/selectors';
+
 const Cart = () => {
   const { items, totalPrice } = useSelector(cartSelect);
 
